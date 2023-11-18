@@ -1,0 +1,28 @@
+import requests
+from bs4 import BeautifulSoup
+
+def scrape_openai_blog():
+    url = 'https://www.openai.com/blog/'
+
+    # Send a GET request to the URL
+    response = requests.get(url)
+
+    # Check if the request was successful (status code 200)
+    if response.status_code == 200:
+        # Parse the HTML content of the page
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Find all the article elements
+        articles = soup.find_all('article')
+
+        # Extract and print the title and link of each article
+        for article in articles:
+            title = article.find('h2').text.strip()
+            link = article.find('a')['href']
+            print(f"Title: {title}\nLink: {link}\n")
+
+    else:
+        print(f"Failed to retrieve the page. Status code: {response.status_code}")
+
+# Run the scraping function
+scrape_openai_blog()
